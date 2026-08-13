@@ -4,7 +4,7 @@
 HQ_BLE Robot Blocks
 ===================
 
-Визуальный блочный редактор программ для BLE-робота HQ_BLE. Версия 1.1.
+Визуальный блочный редактор программ для BLE-робота HQ_BLE. Версия 1.3.
 
 Протокол:
   Service: AE00
@@ -183,15 +183,31 @@ for _cyr, _latin in {
     FONT_5X5[_cyr] = FONT_5X5[_latin]
 
 
+def _mirror_row5(value: int) -> int:
+    """Горизонтально зеркалит 5 полезных бит строки."""
+    value &= 0x1F
+    result = 0
+    for bit in range(5):
+        if value & (1 << bit):
+            result |= 1 << (4 - bit)
+    return result
+
+
+def _mirror_frame_horizontal(rows: list[int]) -> list[int]:
+    """Зеркалит весь кадр 5x5 слева направо."""
+    return [_mirror_row5(row) for row in rows]
+
+
 def text_to_matrix_frames(text: str) -> list[list[int]]:
     """
     Рендерит строку в последовательность кадров 5x5.
-    Строка программно прокручивается справа налево.
+
+    Для реальной матрицы HQ_BLE:
+    - каждый кадр зеркалим по горизонтали;
+    - порядок кадров оставляем прямым: на HQ_BLE это даёт движение справа налево.
     """
     text = (text or " ").upper()
 
-    # Каждый элемент columns — вертикальная колонка из 5 бит:
-    # bit4 = верхний пиксель, bit0 = нижний.
     columns: list[int] = [0] * 5
 
     for ch in text:
@@ -202,7 +218,7 @@ def text_to_matrix_frames(text: str) -> list[list[int]]:
                 if glyph[y] & (1 << (4 - x)):
                     column |= 1 << (4 - y)
             columns.append(column)
-        columns.append(0)  # пробел между символами
+        columns.append(0)
 
     columns.extend([0] * 5)
 
@@ -217,10 +233,12 @@ def text_to_matrix_frames(text: str) -> list[list[int]]:
             for y in range(5):
                 if column & (1 << (4 - y)):
                     rows[y] |= 1 << (4 - x)
-        frames.append(rows)
 
+        frames.append(_mirror_frame_horizontal(rows))
+
+    # Буквы уже зеркалятся выше правильно для физической матрицы.
+    # Порядок кадров НЕ разворачиваем: так строка идёт справа налево.
     return frames
-
 
 # ---------------------------------------------------------------------------
 # Background asyncio loop
