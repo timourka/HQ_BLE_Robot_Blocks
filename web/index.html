@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HQ_BLE Blockly Studio</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+  <script src="https://unpkg.com/blockly/msg/ru.js"></script>
+</head>
+<body>
+  <header class="toolbar">
+    <div class="brand">HQ_BLE <span>Blockly Studio</span></div>
+    <div class="actions">
+      <button id="connectBtn" class="primary">Подключить</button>
+      <button id="disconnectBtn">Отключить</button>
+      <button id="runBtn" class="run">▶ Запустить</button>
+      <button id="stopBtn" class="danger">■ Стоп</button>
+      <span class="divider"></span>
+      <button id="openBtn">Открыть</button>
+      <button id="saveBtn">Сохранить</button>
+      <button id="saveAsBtn">Сохранить как</button>
+    </div>
+    <div class="status"><i id="statusDot"></i><span id="statusText">Не подключено</span></div>
+  </header>
+
+  <nav class="program-bar">
+    <div id="programTabs" class="program-tabs"></div>
+    <button id="addProgramBtn" title="Новая программа">＋</button>
+    <button id="renameProgramBtn">Переименовать</button>
+    <button id="deleteProgramBtn">Закрыть</button>
+  </nav>
+
+  <main>
+    <section class="editor">
+      <div id="blocklyDiv"></div>
+    </section>
+    <aside>
+      <div class="panel-tabs">
+        <button class="active" data-panel="logPanel">Журнал</button>
+        <button data-panel="variablesPanel">Переменные</button>
+        <button data-panel="controlsPanel">Пульт</button>
+      </div>
+      <section id="logPanel" class="panel active">
+        <div class="io-line"><b>TX</b><span id="txValue">—</span></div>
+        <div class="io-line"><b>RX</b><span id="rxValue">—</span></div>
+        <pre id="log"></pre>
+      </section>
+      <section id="variablesPanel" class="panel">
+        <div class="panel-head">
+          <h2>Переменные</h2>
+          <button id="addVariableBtn">＋ Добавить</button>
+        </div>
+        <div id="variablesList"></div>
+      </section>
+      <section id="controlsPanel" class="panel">
+        <div class="panel-head">
+          <h2>Пульт</h2>
+          <button id="addControlBtn">＋ Добавить</button>
+        </div>
+        <div id="controlsList"></div>
+      </section>
+    </aside>
+  </main>
+
+  <div id="toast" role="alert"></div>
+
+  <xml id="toolbox" style="display:none">
+    <category name="Движение" colour="#43A047">
+      <block type="hq_forward"></block>
+      <block type="hq_backward"></block>
+      <block type="hq_left"></block>
+      <block type="hq_right"></block>
+      <block type="hq_stop"></block>
+      <block type="hq_wait"></block>
+    </category>
+    <category name="Поток" colour="#FFB300">
+      <block type="hq_repeat"></block>
+      <block type="hq_parallel"></block>
+    </category>
+    <category name="Переменные и массивы" colour="#00897B">
+      <block type="hq_var_set"></block>
+      <block type="hq_var_change"></block>
+      <block type="hq_var_math"></block>
+      <block type="hq_array_set"></block>
+      <block type="hq_array_append"></block>
+      <block type="hq_array_insert"></block>
+      <block type="hq_array_pop"></block>
+      <block type="hq_log"></block>
+    </category>
+    <category name="Управление" colour="#7E57C2">
+      <block type="hq_control_define"></block>
+      <block type="hq_control_read"></block>
+      <block type="hq_control_write"></block>
+    </category>
+    <category name="Экран и звук" colour="#AB47BC">
+      <block type="hq_matrix"></block>
+      <block type="hq_marquee"></block>
+      <block type="hq_clear_matrix"></block>
+      <block type="hq_melody"></block>
+    </category>
+    <category name="Файлы" colour="#455A64">
+      <block type="hq_file_read"></block>
+      <block type="hq_file_write"></block>
+      <block type="hq_file_list"></block>
+    </category>
+    <category name="Дополнительно" colour="#607D8B">
+      <block type="hq_raw"></block>
+    </category>
+  </xml>
+
+  <script src="blocks.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

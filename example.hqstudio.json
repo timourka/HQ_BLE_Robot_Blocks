@@ -1,0 +1,33 @@
+{
+  "format": "hq_ble_robot_studio",
+  "version": 2,
+  "device": "HQ_BLE",
+  "programs": [
+    {
+      "id": "example-program",
+      "name": "Матрица из переменной",
+      "blocks": [
+        {
+          "id": "b1",
+          "type": "var_set",
+          "name": "screen",
+          "expr": "[[0,1,0,1,0],[1,1,1,1,1],[1,1,1,1,1],[0,1,1,1,0],[0,0,1,0,0]]"
+        },
+        {
+          "id": "b2",
+          "type": "matrix",
+          "source": "expr",
+          "rows": [0, 0, 0, 0, 0],
+          "matrix_expr": "screen"
+        },
+        {
+          "id": "b3",
+          "type": "wait",
+          "duration_expr": "1"
+        }
+      ]
+    }
+  ],
+  "variables": {},
+  "controls": {}
+}
